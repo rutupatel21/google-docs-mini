@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/docs');
+mongoose.connect('mongodb://localhost:27017/auth_demo_app');
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -7,13 +7,11 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 
-var passportLocalMongoose = require('passport-local-mongoose');
+//var passportLocalMongoose = require('passport-local-mongoose');
 var db = mongoose.connection;
 
-var Schema = mongoose.Schema;
+var DocSchema = mongoose.Schema({
+  "docpath" : String,
+});
 
-var docSchema = new Schema({
-  path:  { type: String },
-  caption: { type: String }
-  });
-module.exports = mongoose.model('Docs', docSchema);
+module.exports = mongoose.model('auth_demo_app', DocSchema, 'docs');

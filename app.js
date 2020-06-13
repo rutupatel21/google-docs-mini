@@ -88,57 +88,63 @@ app.get("/logout", function (req, res) {
 
 // ROUTES for file upload
 
-// var storage = multer.diskStorage({
-//     destination:function(req,file,cb){
-//          cb(null,'./public/uploads')
-//     },
-//     filename(req,file,cb){
-//         cb(null,file.originalname)
-//     }
-// })
-//
-// var upload = multer({storage:storage});
-//
-//  mongoose.connect('mongodb://localhost:27017/docs',{useNewUrlParser:false})
-//  .then(()=>console.log('connect')).catch(err=>console.log(err))
-//
-// // making the collection(table) schema, it contains path file for saving the file path
-// // var docSchema = new mongoose.Schema({
-// //     docpath:String
-// // })
-//
-// app.use(express.static('public'))
-//
-// app.get('/fileUpload',(req,res)=>{
-//     Docs.find((err,data)=>{
-//              if(err){
-//                  console.log(err)
-//              }
-//             if(data){
-//                 console.log(data)
-//                 res.render('fileUpload',{data:data})
-//             }
-//            else{
-//                res.render('fileUpload',{data:{}})
-//            }
-//     })
-// })
-//
-// app.post('/',upload.single('pic'),(req,res)=>{
-//     var x= 'uploads/'+req.file.originalname;
-//     var picss = new picModel({
-//         picspath:x
-//     })
-//     picss.save((err,data)=>{
-//          if(err){
-//              console.log(err)
-//          }
-//          else{
-//              console.log('data',data)
-//             res.redirect('/')
-//          }
-//     })
-// })
+var storage = multer.diskStorage({
+    destination:function(req,file,cb){
+         cb(null,'./public/uploads')
+    },
+    filename(req,file,cb){
+        cb(null,file.originalname)
+    }
+})
+
+var upload = multer({storage:storage});
+
+app.use(express.static('public'))
+
+//var findquery = Docs.DocSchema.find();
+
+app.get('/fileUpload',function(req,res,next){
+	// findquery.exec(function(err, data) {
+	// 	console.log(data.length);
+	// 	if(err) throw err;
+	// 	Docs.DocSchema.find().distinct('_id', function(err, Response) {
+	// 		 		  if (err) return next(err);
+	// 					res.render('fileUpload', { title: 'My Files', records: data, recordlen:Response.length});
+	// 	})
+	// 	//res.json(response);
+	// 	//res.render('fileUpload', { title: 'file upload', msg:req.query.msg, doclist : data });
+	// });
+
+    Docs.find({},['docpath'], (err,data)=>{
+             if(err){
+                 console.log(err)
+             }
+            if(data){
+                console.log(data)
+                res.render('fileUpload',{data:data})
+            }
+           else{
+               res.render('fileUpload',{data:{}})
+           }
+    })
+})
+
+
+app.post('/fileUpload',upload.single('userFile'),(req,res)=>{
+		var x= 'public/uploads/'+req.file.originalname;
+    var docs = new Docs({
+        docpath:x
+    })
+    docs.save((err,data)=>{
+         if(err){
+             console.log(err)
+         }
+         else{
+             console.log('data',data)
+            res.redirect('/fileUpload')
+         }
+    })
+})
 // other functions
 
 function isLoggedIn(req, res, next) {

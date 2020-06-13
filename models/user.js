@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/docs');
+mongoose.connect('mongodb://localhost:27017/auth_demo_app');
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);

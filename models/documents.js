@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/auth_demo_app');
 
 mongoose.set('useNewUrlParser', true);
@@ -14,4 +15,4 @@ var DocSchema = mongoose.Schema({
   "docpath" : String,
 });
 
-module.exports = mongoose.model('auth_demo_app', DocSchema, 'docs');
+module.exports = mongoose.model('docs', DocSchema);

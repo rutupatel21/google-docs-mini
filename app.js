@@ -103,7 +103,7 @@ app.use(express.static('public'))
 
 //var findquery = Docs.DocSchema.find();
 
-app.get('/fileUpload',function(req,res,next){
+
 	// findquery.exec(function(err, data) {
 	// 	console.log(data.length);
 	// 	if(err) throw err;
@@ -114,21 +114,28 @@ app.get('/fileUpload',function(req,res,next){
 	// 	//res.json(response);
 	// 	//res.render('fileUpload', { title: 'file upload', msg:req.query.msg, doclist : data });
 	// });
-
-    Docs.find({},['docpath'], (err,data)=>{
-             if(err){
-                 console.log(err)
-             }
-            if(data){
-                console.log(data)
-                res.render('fileUpload',{data:data})
-            }
-           else{
-               res.render('fileUpload',{data:{}})
-           }
-    })
+////////////////////////////////////////////////////////////////////
+// app.get('/fileUpload',function(req,res,next){
+//     Docs.find({},['docpath'], (err,data)=>{
+//              if(err){
+//                  console.log(err)
+//              }
+//             if(data){
+//                 console.log(data)
+//                 res.render('fileUpload',{data:data})
+//             }
+//            else{
+//                res.render('fileUpload',{data:{}})
+//            }
+//     })
+// })
+/////////////////////////////////////////////////////////////////
+app.get('/fileUpload',function(req,res){
+	Docs.find({}, ['docpath'], {sort:{ _id: -1} }, function(err, data) {
+		if(err) throw err;
+    res.render('fileUpload', { title: 'My Files', msg:req.query.msg, doclist : data, recordlen:data.length });
+  });
 })
-
 
 app.post('/fileUpload',upload.single('userFile'),(req,res)=>{
 		var x= 'public/uploads/'+req.file.originalname;

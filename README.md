@@ -10,11 +10,11 @@ To execute, go to main directory and follow below steps:
 
 For demonstration: https://navigus-assessment-1.herokuapp.com/
 
-| API         | description   |
-| ------------|:-------------:|
-| /           | home page     |
-| /register   | sign up       |
-| /login      | login         |
-| /fileUpload | file upload   |
+| API         | description      |
+|-------------|------------------|
+| /           | home page        |
+| /register   | sign up          |
+| /login      | login            |
+| /fileUpload | upload word file |
 
 

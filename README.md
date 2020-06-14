@@ -4,7 +4,7 @@ This project requires:
 * NodeJS version 6.0 or above
 * MongoDB
 
-Go to main directory and follow below steps:
+To execute, go to main directory and follow below steps:
 * npm install
 * node app.js
 

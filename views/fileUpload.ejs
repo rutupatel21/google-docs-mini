@@ -1,15 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+	<title> Upload word file</title>
+
+
+<link rel="stylesheet"
+href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity=
+"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="/style.css">
+
 </head>
 <body>
-    <form id="uploadForm" enctype="multipart/form-data" method="post" action="/fileUpload">
-        <input type="file" name="userFile" />
-        <input type="submit" value="Upload File" name="submit">
-    </form>
 
-    <li><a href="/logout">Logout</a></li>
+	<br>
+	<br>
+	<br>
+	<div class="container" >
+		<div class="row">
+		<div class="col-md-3">
+
+		</div>
+
+		<div class="col-md-6 main">
+
+			<form id="uploadForm" enctype="multipart/form-data" method="post" action="/fileUpload">
+
+			<h1> Upload File </h1>
+      <input class="box" type="file" name="userFile" required />
+      <center><input class="box" id="submitDetails" type="submit" value="Upload File" name="submit"></center>
+
+			</form>
+
+		</div>
+
+
+		<div class="col-md-3">
+		</div>
+
+	</div>
+	</div>
+	<center><li class="box"><a class="box" href="/logout">Logout</a></li></center>
 </body>
 </html>

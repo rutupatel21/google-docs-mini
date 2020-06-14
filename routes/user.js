@@ -20,11 +20,6 @@ app.use(require("express-session")({
 	resave: false,
 	saveUninitialized: false
 }));
-// app.use(passport.initialize());
-// app.use(passport.session());
-//passport.use(new LocalStrategy(User.authenticate()));
-//passport.serializeUser(User.serializeUser());
-//passport.deserializeUser(User.deserializeUser());
 
 exports.home = function (req, res) {
     res.render('home', { title: 'Home page of google docs mini' });
@@ -59,9 +54,3 @@ exports.loginUser = function (req, res) {
       res.redirect('/secret');
     }
 };
-
-// app.post("/login", passport.authenticate("local", {
-// 	successRedirect: "/secret",
-// 	failureRedirect: "/login"
-// }), function (req, res) {
-// });

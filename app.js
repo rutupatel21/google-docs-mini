@@ -6,13 +6,13 @@ var express = require("express"),
 	passportLocalMongoose = require("passport-local-mongoose"),
 	multer = require('multer'),
 	User = require("./models/user"),
-	Docs = require("./models/documents");
+	Docs = require("./models/documents.js");
 
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
+mongoose.connect("mongodb://localhost/auth_demo_app",{useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', true);
 mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.connect("mongodb://localhost/auth_demo_app");
+//mongoose.set('useUnifiedTopology', true);
 
 var app = express();
 app.set("view engine", "ejs");
@@ -31,10 +31,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+///////////////////////////////////////////////////////////////////
 
 // ROUTES for user login and registration
 
-
+///////////////////////////////////////////////////////////////////
 // Showing home page
 app.get("/", function (req, res) {
 	res.render("home");
@@ -86,7 +87,7 @@ app.get("/logout", function (req, res) {
 	res.redirect("/");
 });
 
-// ROUTES for file upload
+// file upload
 
 var storage = multer.diskStorage({
     destination:function(req,file,cb){
@@ -99,42 +100,28 @@ var storage = multer.diskStorage({
 
 var upload = multer({storage:storage});
 
-app.use(express.static('public'))
-
-//var findquery = Docs.DocSchema.find();
+app.use(express.static('public'));
 
 
-	// findquery.exec(function(err, data) {
-	// 	console.log(data.length);
-	// 	if(err) throw err;
-	// 	Docs.DocSchema.find().distinct('_id', function(err, Response) {
-	// 		 		  if (err) return next(err);
-	// 					res.render('fileUpload', { title: 'My Files', records: data, recordlen:Response.length});
-	// 	})
-	// 	//res.json(response);
-	// 	//res.render('fileUpload', { title: 'file upload', msg:req.query.msg, doclist : data });
-	// });
 ////////////////////////////////////////////////////////////////////
-// app.get('/fileUpload',function(req,res,next){
-//     Docs.find({},['docpath'], (err,data)=>{
-//              if(err){
-//                  console.log(err)
-//              }
-//             if(data){
-//                 console.log(data)
-//                 res.render('fileUpload',{data:data})
-//             }
-//            else{
-//                res.render('fileUpload',{data:{}})
-//            }
-//     })
-// })
-/////////////////////////////////////////////////////////////////
-app.get('/fileUpload',function(req,res){
-	Docs.find({}, ['docpath'], {sort:{ _id: -1} }, function(err, data) {
-		if(err) throw err;
-    res.render('fileUpload', { title: 'My Files', msg:req.query.msg, doclist : data, recordlen:data.length });
-  });
+
+// Routes for file upload
+
+///////////////////////////////////////////////////////////////////
+
+app.get('/fileUpload',function(req,res,next){
+    Docs.find({}, (err,data)=>{
+             if(err){
+                 console.log(err)
+             }
+            if(data){
+                //console.log("my files : "+JSON.stringify(data[0]));
+                res.render('fileUpload',{title: "Your Files", data:data})
+            }
+           else{
+               res.render('secret')
+           }
+    })
 })
 
 app.post('/fileUpload',upload.single('userFile'),(req,res)=>{
@@ -152,6 +139,7 @@ app.post('/fileUpload',upload.single('userFile'),(req,res)=>{
          }
     })
 })
+
 // other functions
 
 function isLoggedIn(req, res, next) {

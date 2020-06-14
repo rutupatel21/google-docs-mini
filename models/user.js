@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/auth_demo_app');
+mongoose.connect('mongodb://localhost:27017/auth_demo_app',{useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.set('useNewUrlParser', true);
+//mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
+//mongoose.set('useUnifiedTopology', true);
 
 
 var passportLocalMongoose = require('passport-local-mongoose');
@@ -18,7 +18,5 @@ var userSchema = new Schema({
 });
 
 userSchema.plugin(passportLocalMongoose);
-// var User = mongoose.model('User', userSchema);
-// module.exports = User;
 module.exports = mongoose.model('User', userSchema);
 module.exports.createUser = function(newUser) {newUser.save();}

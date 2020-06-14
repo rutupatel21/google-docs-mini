@@ -5,16 +5,14 @@ var express = require("express"),
 	LocalStrategy = require("passport-local"),
 	passportLocalMongoose = require("passport-local-mongoose"),
 	multer = require('multer'),
-	User = require("./models/user"),
-	Docs = require("./models/documents.js");
+	User = require("./models/user");
 
-//mongoose.connect("mongodb://localhost/auth_demo_app",{useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect("mongodb://rutu-navigus:hello1121@ds019926.mlab.com:19926/heroku_4lt4tfjq",{useNewUrlParser: true, useUnifiedTopology: true});
+var url = "mongodb://rutu-navigus:hello1121@ds019926.mlab.com:19926/heroku_4lt4tfjq" || "mongodb://localhost/auth_demo_app";
+mongoose.connect(url,{useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect("mongodb://rutu-navigus:hello1121@ds019926.mlab.com:19926/heroku_4lt4tfjq",{useNewUrlParser: true, useUnifiedTopology: true});
 
-//mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', true);
 mongoose.set('useCreateIndex', true);
-//mongoose.set('useUnifiedTopology', true);
 
 var app = express();
 app.set("view engine", "ejs");
@@ -112,13 +110,13 @@ app.use(express.static('public'));
 ///////////////////////////////////////////////////////////////////
 
 app.get('/fileUpload',function(req,res,next){
-    Docs.find({}, (err,data)=>{
+    User.find({}, (err,data)=>{
              if(err){
                  console.log(err)
              }
             if(data){
                 //console.log("my files : "+JSON.stringify(data[0]));
-                res.render('fileUpload',{title: "Your Files", data:data})
+                res.render('fileUpload',{message:" "})
             }
            else{
                res.render('secret')
@@ -127,19 +125,16 @@ app.get('/fileUpload',function(req,res,next){
 })
 
 app.post('/fileUpload',upload.single('userFile'),(req,res)=>{
-		var x= 'public/uploads/'+req.file.originalname;
-    var docs = new Docs({
-        docpath:x
-    })
-    docs.save((err,data)=>{
-         if(err){
-             console.log(err)
-         }
-         else{
-             console.log('data',data)
-            res.redirect('/fileUpload')
-         }
-    })
+		var usern = req.user.username;
+		var path= 'public/uploads/'+req.file.originalname;
+		var filename= req.file.originalname;
+    User.findOneAndUpdate({"username":usern},{$set:{docpath:path,docname:filename}},{new: true},(err, doc) =>{
+			if (err) {
+	        console.log("Something wrong when updating data!");
+	    }
+			res.render('fileUpload',{message: "File uploaded successfully"})
+	    console.log(doc);
+		})
 })
 
 // other functions

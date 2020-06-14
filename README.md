@@ -9,10 +9,12 @@ To execute, go to main directory and follow below steps:
 * node app.js
 
 For demonstration: https://navigus-assessment-1.herokuapp.com/
-REST API:
-* / : Home page
-* /register : sign up
-* /login : login
-* /fileUpload: to upload word document to the server
+
+| API         | description   |
+| ------------|:-------------:|
+| /           | home page     |
+| /register   | sign up       |
+| /login      | login         |
+| /fileUpload | file upload   |
 
 
